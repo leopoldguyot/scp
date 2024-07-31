@@ -1,0 +1,11 @@
+pandoc: '3.2'
+pkgdown: 2.1.0.9000
+pkgdown_sha: 6f01c9267a1cee263216cec38eea10017d751dd8
+articles:
+  advanced: advanced.html
+  QFeatures_nutshell: QFeatures_nutshell.html
+  read_scp: read_scp.html
+  reporting_missing_values: reporting_missing_values.html
+  scp_data_modelling: scp_data_modelling.html
+  scp: scp.html
+last_built: 2024-07-31T12:27Z
