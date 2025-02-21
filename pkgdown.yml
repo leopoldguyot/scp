@@ -1,6 +1,6 @@
-pandoc: '3.2'
-pkgdown: 2.1.0.9000
-pkgdown_sha: 6f01c9267a1cee263216cec38eea10017d751dd8
+pandoc: 3.6.3
+pkgdown: 2.1.1.9000
+pkgdown_sha: 18cca452d736fea33d47b19b4ef4973db9104a75
 articles:
   advanced: advanced.html
   QFeatures_nutshell: QFeatures_nutshell.html
@@ -8,4 +8,4 @@ articles:
   reporting_missing_values: reporting_missing_values.html
   scp_data_modelling: scp_data_modelling.html
   scp: scp.html
-last_built: 2024-07-31T12:27Z
+last_built: 2025-02-21T13:28Z
