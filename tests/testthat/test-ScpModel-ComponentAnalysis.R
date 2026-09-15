@@ -438,24 +438,18 @@ test_that(".runAPCA", {
     ## with nipals
     i <- sample(1:length(m1), length(m1) / 2)
     m1[i] <- m2[i] <- NA
-    exp <- expect_warning(
-        .nipalsWrapper(m1 + m2),
-        regexp = "Stopping after 500 iterations"
-    )
-    test <- expect_warning(
-        .runAPCA(m1, m2, .nipalsWrapper),
-        regexp = "Stopping after 500 iterations"
-    )
+    exp <- .nipalsWrapper(m1 + m2)
+    test <- .runAPCA(m1, m2, .nipalsWrapper)
     expect_identical(test, exp)
     ## Test ... arguments
     exp <- expect_warning(
-        .nipalsWrapper(m1 + m2, maxiter = 3),
-        regexp = "Stopping after 3 iterations"
-    )
+            .nipalsWrapper(m1 + m2, maxiter = 3),
+            regexp = "Stopping after 3 iterations for PC"
+        )
     test <- expect_warning(
-        .runAPCA(m1, m2, .nipalsWrapper, maxiter = 3),
-        regexp = "Stopping after 3 iterations"
-    )
+            .runAPCA(m1, m2, .nipalsWrapper, maxiter = 3),
+            regexp = "Stopping after 3 iterations for PC"
+        )
     expect_identical(test, exp)
 })
 
@@ -471,21 +465,15 @@ test_that(".runASCA", {
     ## with nipals
     i <- sample(1:length(m1), length(m1) / 2)
     m1[i] <- m2[i] <- NA
-    expect_warning(
-        expect_identical(
-            .runASCA(m1, m2, .nipalsWrapper),
-            .nipalsWrapper(m1)
-        ),
-        regexp = "Stopping after 500 iterations"
+    expect_identical(
+        .runASCA(m1, m2, .nipalsWrapper),
+        .nipalsWrapper(m1)
     )
     ## Test ... arguments
-    expect_warning(
-        expect_identical(
-            .runASCA(m1, m2, .nipalsWrapper, maxiter = 3),
-            .nipalsWrapper(m1, maxiter = 3)
-        ),
-        regexp = "Stopping after 3 iterations"
-    )
+    expect_warning(expect_identical(
+        .runASCA(m1, m2, .nipalsWrapper, maxiter = 3),
+        .nipalsWrapper(m1, maxiter = 3)
+    ), regexp = "Stopping after 3 iterations for PC")
 })
 
 test_that(".runASCA.E", {
@@ -562,12 +550,9 @@ test_that(".nipalsWrapper", {
     ## NIPALS with missing values, default parameters
     i <- sample(1:length(m), length(m) / 2)
     m[i] <- NA
-    expect_warning(
-        exp <- nipals(t(m), startcol = function(x) sum(!is.na(x)),
-                      scale = FALSE, ncomp = 2),
-        "Stopping after 500 iterations for PC 1."
-    )
-    expect_warning(expect_identical(
+    exp <- nipals(t(m), startcol = function(x) sum(!is.na(x)),
+                  scale = FALSE, ncomp = 2)
+    expect_identical(
         .nipalsWrapper(m),
         list(
             scores = matrix(exp$scores %*% diag(exp$eig), ncol = 2,
@@ -577,7 +562,7 @@ test_that(".nipalsWrapper", {
                                     .Names = c("PC1", "PC2")),
             proportionVariance = structure(exp$R2, .Names = c("PC1", "PC2"))
         )
-    ),"Stopping after 500 iterations for PC 1.")
+    )
     ## NIPALS with missing values, one row is all NA
     m[1, ] <- NA
     exp <- nipals(t(m[-1, ]), startcol = function(x) sum(!is.na(x)),
