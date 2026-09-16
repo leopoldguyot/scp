@@ -920,6 +920,10 @@ test_that(".trimPlotLevels", {
 })
 
 test_that("scpComponentBiplot", {
+    labelParams <- list(
+        size = 2, max.overlaps = 10,
+        seed = 123, max.time = Inf, max.iter = 10000
+    )
     m <- matrix(
         1, 10, 15, dimnames = list(paste0("row", 1:10), paste0("col", 1:15))
     )
@@ -944,25 +948,29 @@ test_that("scpComponentBiplot", {
     expect_doppelganger(
         "scpComponentBiplot unmodelled default",
         scpComponentBiplot(
-            scoreList = caRes$bySample, eigenvectorList = caRes$byFeature
+            scoreList = caRes$bySample, eigenvectorList = caRes$byFeature,
+            labelParams = labelParams
         )[["unmodelled"]]
     )
     expect_doppelganger(
         "scpComponentBiplot residuals default",
         scpComponentBiplot(
-            scoreList = caRes$bySample, eigenvectorList = caRes$byFeature
+            scoreList = caRes$bySample, eigenvectorList = caRes$byFeature,
+            labelParams = labelParams
         )[["residuals"]]
     )
     expect_doppelganger(
         "scpComponentBiplot APCA_condition default",
         scpComponentBiplot(
-            scoreList = caRes$bySample, eigenvectorList = caRes$byFeature
+            scoreList = caRes$bySample, eigenvectorList = caRes$byFeature,
+            labelParams = labelParams
         )[["APCA_condition"]]
     )
     expect_doppelganger(
         "scpComponentBiplot APCA_numeric default",
         scpComponentBiplot(
-            scoreList = caRes$bySample, eigenvectorList = caRes$byFeature
+            scoreList = caRes$bySample, eigenvectorList = caRes$byFeature,
+            labelParams = labelParams
         )[["APCA_numeric"]]
     )
     ## Change comp
@@ -970,7 +978,8 @@ test_that("scpComponentBiplot", {
         "scpComponentBiplot change comp",
         scpComponentBiplot(
             scoreList = caRes$bySample, eigenvectorList = caRes$byFeature,
-            comp = c(1, 3)
+            comp = c(1, 3),
+            labelParams = labelParams
         )[["unmodelled"]]
     )
     ## Change pointParams
@@ -978,7 +987,8 @@ test_that("scpComponentBiplot", {
         "scpComponentBiplot change pointParams",
         scpComponentBiplot(
             scoreList = caRes$bySample, eigenvectorList = caRes$byFeature,
-            pointParams = list(aes(colour = condition, size = numeric))
+            pointParams = list(aes(colour = condition, size = numeric)),
+            labelParams = labelParams
         )[["unmodelled"]]
     )
     ## Change arrowParams
@@ -986,7 +996,8 @@ test_that("scpComponentBiplot", {
         "scpComponentBiplot change arrowParams",
         scpComponentBiplot(
             scoreList = caRes$bySample, eigenvectorList = caRes$byFeature,
-            arrowParams = list(mapping = aes(colour = annot, linewidth = annot))
+            arrowParams = list(mapping = aes(colour = annot, linewidth = annot)),
+            labelParams = labelParams
         )[["unmodelled"]]
     )
     ## Change labelParams
@@ -994,7 +1005,10 @@ test_that("scpComponentBiplot", {
         "scpComponentBiplot change labelParams",
         scpComponentBiplot(
             scoreList = caRes$bySample, eigenvectorList = caRes$byFeature,
-            labelParams = list(mapping = aes(colour = annot, size = annot))
+            labelParams = list(
+                mapping = aes(colour = annot, size = annot),
+                seed = 123, max.time = Inf, max.iter = 10000
+            )
         )[["unmodelled"]]
     )
     ## Change textBy
@@ -1002,7 +1016,8 @@ test_that("scpComponentBiplot", {
         "scpComponentBiplot change textBy",
         scpComponentBiplot(
             scoreList = caRes$bySample, eigenvectorList = caRes$byFeature,
-            textBy = "annot"
+            textBy = "annot",
+            labelParams = labelParams
         )[["unmodelled"]]
     )
     ## Change top
@@ -1010,7 +1025,8 @@ test_that("scpComponentBiplot", {
         "scpComponentBiplot change top",
         scpComponentBiplot(
             scoreList = caRes$bySample, eigenvectorList = caRes$byFeature,
-            top = 5
+            top = 5,
+            labelParams = labelParams
         )[["unmodelled"]]
     )
     ## Change maxLevels
@@ -1018,7 +1034,8 @@ test_that("scpComponentBiplot", {
         "scpComponentBiplot change maxLevels",
         scpComponentBiplot(
             scoreList = caRes$bySample, eigenvectorList = caRes$byFeature,
-            pointParams = list(aes(colour = condition)), maxLevels = 1
+            pointParams = list(aes(colour = condition)), maxLevels = 1,
+            labelParams = labelParams
         )[["unmodelled"]]
     )
 })
@@ -1043,6 +1060,9 @@ test_that(".scaleComponentsToUnity", {
 })
 
 test_that(".addEigenArrows", {
+    labelParams <- list(
+        seed = 123, max.time = Inf, max.iter = 10000
+    )
     df <- data.frame(
         x = seq(-1, 1, length.out = 10),
         y = seq(1, -1, length.out = 10),
@@ -1062,40 +1082,40 @@ test_that(".addEigenArrows", {
         ".addEigenArrows standard case",
         .addEigenArrows(pl = pl, eigenvectors = eigenvectors,
                         comp = 1:2, textBy = "name", top = 10,
-                        arrowParams = list(), labelParams = list())
+                        arrowParams = list(), labelParams = labelParams)
     )
     ## Change comp
     expect_doppelganger(
         ".addEigenArrows change comp",
         .addEigenArrows(pl = pl, eigenvectors = eigenvectors,
                         comp = c(1, 3), textBy = "name", top = 10,
-                        arrowParams = list(), labelParams = list())
+                        arrowParams = list(), labelParams = labelParams)
     )
     ## Change textBy
     expect_doppelganger(
         ".addEigenArrows change textBy",
         .addEigenArrows(pl = pl, eigenvectors = eigenvectors,
                         comp = c(1, 3), textBy = "name2", top = 10,
-                        arrowParams = list(), labelParams = list())
+                        arrowParams = list(), labelParams = labelParams)
     )
     ## Change top
     expect_doppelganger(
         ".addEigenArrows change top",
         .addEigenArrows(pl = pl, eigenvectors = eigenvectors,
                         comp = c(1, 3), textBy = "name", top = 5,
-                        arrowParams = list(), labelParams = list())
+                        arrowParams = list(), labelParams = labelParams)
     )
     expect_doppelganger(
         ".addEigenArrows top is zero",
         .addEigenArrows(pl = pl, eigenvectors = eigenvectors,
                         comp = c(1, 3), textBy = "name", top = 0,
-                        arrowParams = list(), labelParams = list())
+                        arrowParams = list(), labelParams = labelParams)
     )
     expect_doppelganger(
         ".addEigenArrows top is max",
         .addEigenArrows(pl = pl, eigenvectors = eigenvectors,
                         comp = c(1, 3), textBy = "name", top = 100,
-                        arrowParams = list(), labelParams = list())
+                        arrowParams = list(), labelParams = labelParams)
     )
     ## Change arrowParams
     expect_doppelganger(
@@ -1103,7 +1123,7 @@ test_that(".addEigenArrows", {
         .addEigenArrows(pl = pl, eigenvectors = eigenvectors,
                         comp = c(1, 3), textBy = "name2", top = 10,
                         arrowParams = list(aes(colour = name), linewidth = 2),
-                        labelParams = list())
+                        labelParams = labelParams)
     )
     ## Change labelParams
     expect_doppelganger(
@@ -1111,7 +1131,8 @@ test_that(".addEigenArrows", {
         .addEigenArrows(pl = pl, eigenvectors = eigenvectors,
                         comp = c(1, 3), textBy = "name", top = 10,
                         arrowParams = list(),
-                        labelParams = list(aes(colour = name), size = 2))
+                        labelParams = c(list(aes(colour = name), size = 2),
+                                        labelParams))
     )
 })
 
