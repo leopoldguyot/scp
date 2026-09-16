@@ -520,7 +520,7 @@ medianCVperCell <- function(object, i, groupBy, nobs = 5, na.rm = TRUE,
     ## Check arguments: no redundant columns
     coln <- unlist(colnames(object)[i])
     if (any(duplicated(coln)))
-        stop("Duplicated samples were found in assay(s) 'i'. This would ",
+        stop("Duplicated samples were found in set(s) 'i'. This would ",
              "lead to inconsistencies in the 'colData'.")
     ## Initiate the vectors with cell median CVs
     medCVs <- rep(NA, length(coln))

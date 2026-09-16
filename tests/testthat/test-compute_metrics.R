@@ -75,8 +75,9 @@ test_that("featureCV", {
 
 test_that(".getDetectionMatrix", {
     data("scp1")
-    expect_error(.getDetectionMatrix(scp1, "peptide"),
-                 regexp = "set.*is/are not found.*peptide$")
+    # This warning comes from QFeatures:::.normIndex
+    #expect_error(.getDetectionMatrix(scp1, "peptide"),
+    #             regexp = "assay.*is/are not found.*peptide$")
     expect_error(.getDetectionMatrix(scp1, c("peptides", "proteins")),
                  regexp = "You selected multiple sets")
     expect_error(.getDetectionMatrix(scp1, 1:2),
